@@ -1,7 +1,8 @@
 {
-  "name": "login-signup-page",
-  "version": "0.1.0",
+  "name": "afaq-hub-auth",
+  "version": "1.0.0",
   "private": true,
+  "description": "Premium gold-themed login & signup page built with Next.js, Clerk, Tailwind CSS and Framer Motion.",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -9,18 +10,21 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106",
-    "next": "15.0.3"
+    "@clerk/nextjs": "^6.9.10",
+    "@clerk/themes": "^2.4.57",
+    "framer-motion": "^11.18.0",
+    "next": "^15.1.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "15.0.3",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "15.0.3"
+    "typescript": "^5"
   }
 }
