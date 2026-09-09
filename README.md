@@ -43,8 +43,8 @@
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/afaqulislam/login-signup-page.git
-cd login-signup-page
+git clone https://github.com/afaqulislam/clerk-login-page.git
+cd clerk-login-page
 
 # 2. Install dependencies
 npm install
@@ -79,6 +79,7 @@ Open [http://localhost:3000](http://localhost:3000) to see the app.
 | `npm run build`    | Build for production            |
 | `npm run start`    | Start the production build      |
 | `npm run lint`     | Run ESLint                      |
+| `npm run typecheck` | Run TypeScript type checking   |
 
 ## 📁 Project Structure
 

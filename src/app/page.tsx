@@ -14,6 +14,16 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { siteConfig } from "@/config/site";
 
+const hasPublishableKey = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+function hexToRgb(hex: string) {
+  const value = hex.replace("#", "");
+  const r = parseInt(value.slice(0, 2), 16);
+  const g = parseInt(value.slice(2, 4), 16);
+  const b = parseInt(value.slice(4, 6), 16);
+  return `${r}, ${g}, ${b}`;
+}
+
 function useAnimatedCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -29,6 +39,7 @@ function useAnimatedCanvas() {
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const gridSize = 64;
+    const brandRgb = hexToRgb(siteConfig.colors.brand);
 
     const handleResize = () => {
       canvas.width = window.innerWidth * dpr;
@@ -55,7 +66,7 @@ function useAnimatedCanvas() {
         const alpha = 0.1 + pulse * 0.3;
         ctx.beginPath();
         ctx.arc(dot.x, dot.y, 1.2 + pulse * 1.3, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(201, 162, 39, ${alpha})`;
+        ctx.fillStyle = `rgba(${brandRgb}, ${alpha})`;
         ctx.fill();
       });
       t++;
@@ -160,6 +171,40 @@ function SignInCard() {
             </button>
           </SignUpButton>
         </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function ConfigWarningCard() {
+  return (
+    <motion.div
+      key="configWarning"
+      initial={{ opacity: 0, y: 24, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -24, scale: 0.98 }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      className="w-full"
+    >
+      <div className="rounded-2xl border border-gold-glow/30 bg-white/[0.04] p-8 shadow-2xl shadow-black/60 backdrop-blur-2xl sm:p-10">
+        <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-gold-glow/25 bg-brand/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-gold-glow">
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-gold-glow animate-pulse-slow" />
+          Setup required
+        </span>
+        <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+          Authentication isn’t configured yet
+        </h2>
+        <p className="mt-3 text-muted-foreground">
+          Add your Clerk keys to{" "}
+          <code className="rounded bg-white/10 px-1.5 py-0.5 text-xs text-gold-glow">
+            NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+          </code>{" "}
+          and{" "}
+          <code className="rounded bg-white/10 px-1.5 py-0.5 text-xs text-gold-glow">
+            CLERK_SECRET_KEY
+          </code>{" "}
+          in your environment to enable sign in and sign up.
+        </p>
       </div>
     </motion.div>
   );
@@ -350,12 +395,18 @@ export default function Home() {
         <AnimatePresence mode="wait">
           {mounted && (
             <div className="w-full max-w-md">
-              <SignedIn>
-                <SignedInCard />
-              </SignedIn>
-              <SignedOut>
-                <SignInCard />
-              </SignedOut>
+              {hasPublishableKey ? (
+                <>
+                  <SignedIn>
+                    <SignedInCard />
+                  </SignedIn>
+                  <SignedOut>
+                    <SignInCard />
+                  </SignedOut>
+                </>
+              ) : (
+                <ConfigWarningCard />
+              )}
             </div>
           )}
         </AnimatePresence>

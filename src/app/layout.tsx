@@ -7,6 +7,10 @@ import "./globals.css";
 import type { Appearance } from "@clerk/types";
 import { siteConfig } from "@/config/site";
 
+const {
+  colors: { brand: brandColor, brandHover: brandHoverColor, background: backgroundColor },
+} = siteConfig;
+
 const clerkAppearance: Appearance = {
   baseTheme: dark,
   layout: {
@@ -14,8 +18,8 @@ const clerkAppearance: Appearance = {
     logoPlacement: "inside",
   },
   variables: {
-    colorPrimary: "#C9A227",
-    colorBackground: "#0e0e0e",
+    colorPrimary: brandColor,
+    colorBackground: backgroundColor,
     colorInputBackground: "#151515",
     colorInputText: "#fafafa",
     colorText: "#fafafa",
@@ -58,11 +62,11 @@ const clerkAppearance: Appearance = {
       marginTop: "14px",
     },
     formButtonPrimary: {
-      backgroundColor: "#C9A227",
+      backgroundColor: brandColor,
       color: "#000",
       fontWeight: 600,
       "&:hover": {
-        backgroundColor: "#e0b53a",
+        backgroundColor: brandHoverColor,
       },
     },
     formFieldInput: {
@@ -125,7 +129,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0e0e0e",
+  themeColor: backgroundColor,
   width: "device-width",
   initialScale: 1,
 };
@@ -135,11 +139,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const hasPublishableKey =
+    typeof process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY === "string";
+
   return (
-    <ClerkProvider appearance={clerkAppearance}>
-      <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
-        <body className="font-sans antialiased">{children}</body>
-      </html>
-    </ClerkProvider>
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+      <body className="font-sans antialiased">
+        {hasPublishableKey ? (
+          <ClerkProvider appearance={clerkAppearance}>{children}</ClerkProvider>
+        ) : (
+          children
+        )}
+      </body>
+    </html>
   );
 }

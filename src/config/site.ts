@@ -14,4 +14,9 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
   logo: "/favicon.svg",
   tagline: "Ignite your imagination and achieve greatness.",
+  colors: {
+    brand: "#C9A227" as const,
+    brandHover: "#e0b53a" as const,
+    background: "#0e0e0e" as const,
+  },
 } as const;
